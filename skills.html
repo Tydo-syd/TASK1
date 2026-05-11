@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Page-specific enhancements (kept inside this file as requested) */
+        body{
+            padding-bottom: 70px; /* keep content above fixed marquee footer */
+        }
+
+        .skills-wrap{
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .hero{
+            display:flex;
+            gap: 18px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .hero-card{
+            flex: 1 1 420px;
+            background: linear-gradient(135deg, rgba(40,40,40,0.06), rgba(0,0,0,0));
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 14px;
+            padding: 18px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+        }
+
+        .hero-card h2{
+            margin: 0 0 8px;
+            font-size: 1.25rem;
+        }
+
+        .featured-title{
+            display:flex;
+            align-items:center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .badge{
+            display:inline-flex;
+            align-items:center;
+            gap: 8px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(51,51,51,0.08);
+            font-weight: 700;
+        }
+
+        .badge .dot{
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #333;
+            box-shadow: 0 0 0 6px rgba(51,51,51,0.12);
+        }
+
+        .featured-desc{
+            margin: 0 0 14px;
+            color: rgba(0,0,0,0.75);
+            line-height: 1.5;
+        }
+
+        .meter{
+            display:flex;
+            align-items:center;
+            gap: 12px;
+        }
+
+        .meter-label{
+            font-weight: 700;
+            min-width: 140px;
+        }
+
+        .progress{
+            position: relative;
+            height: 14px;
+            flex: 1;
+            background: rgba(0,0,0,0.08);
+            border-radius: 999px;
+            overflow:hidden;
+        }
+
+        .progress::after{
+            content:"";
+            position:absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(255,255,255,0.0), rgba(255,255,255,0.55), rgba(255,255,255,0.0));
+            transform: translateX(-100%);
+            animation: shimmer 2.4s ease-in-out infinite;
+            pointer-events:none;
+            opacity: 0.7;
+        }
+
+        @keyframes shimmer{
+            0%{ transform: translateX(-100%); }
+            60%{ transform: translateX(100%); }
+            100%{ transform: translateX(100%); }
+        }
+
+        .progress-bar{
+            position:absolute;
+            inset: 0 auto 0 0;
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #4f46e5, #06b6d4);
+            border-radius: 999px;
+            transition: width 700ms cubic-bezier(.2,.8,.2,1);
+        }
+
+        .progress-meta{
+            min-width: 48px;
+            text-align:right;
+            font-weight: 800;
+        }
+
+        .hint{
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: rgba(0,0,0,0.6);
+        }
+
+        .skill-grid{
+            flex: 1 1 420px;
+            display:grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            width: 100%;
+        }
+
+        @media (max-width: 720px){
+            .skill-grid{ grid-template-columns: 1fr; }
+        }
+
+        .skill-card{
+            text-align:left;
+            cursor:pointer;
+            border-radius: 14px;
+            border: 1px solid rgba(0,0,0,0.10);
+            background: #fff;
+            padding: 14px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+            outline: none;
+            user-select:none;
+        }
+
+        .skill-card:hover{
+            transform: translateY(-3px);
+            box-shadow: 0 18px 30px rgba(0,0,0,0.10);
+            border-color: rgba(79,70,229,0.35);
+        }
+
+        .skill-card.active{
+            border-color: rgba(79,70,229,0.55);
+            box-shadow: 0 20px 40px rgba(79,70,229,0.18);
+        }
+
+        .skill-top{
+            display:flex;
+            align-items:center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .skill-name{
+            font-weight: 900;
+            letter-spacing: 0.2px;
+        }
+
+        .skill-percent{
+            font-weight: 900;
+            color: #4f46e5;
+        }
+
+        .skill-mini{
+            margin: 0;
+            color: rgba(0,0,0,0.7);
+            line-height: 1.35;
+            font-size: 0.93rem;
+        }
+
+        .skill-pip-row{
+            margin-top: 12px;
+            display:flex;
+            gap: 6px;
+        }
+
+        .pip{
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.10);
+            transition: background 220ms ease;
+        }
+
+        .skill-card.active .pip{
+            background: rgba(79,70,229,0.8);
+        }
+
+        .skill-card[data-points="1"] .pip:nth-child(-n+1){ background: rgba(79,70,229,0.85); }
+        .skill-card[data-points="2"] .pip:nth-child(-n+2){ background: rgba(79,70,229,0.85); }
+        .skill-card[data-points="3"] .pip:nth-child(-n+3){ background: rgba(79,70,229,0.85); }
+        .skill-card[data-points="4"] .pip:nth-child(-n+4){ background: rgba(79,70,229,0.85); }
+        .skill-card[data-points="5"] .pip:nth-child(-n+5){ background: rgba(79,70,229,0.85); }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce){
+            .progress::after{ animation: none; }
+            .progress-bar{ transition: none; }
+            .skill-card{ transition: none; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>MY PORTFOLIO</h1>
+        <nav>
+            <a href="childhood.html">Upbringing</a>
+            <a href="education.html">Education</a>
+            <a href="index.html">Home</a>
+            <a href="future.html">Future</a>
+            <a href="contact.html">contact</a>
+        </nav>
+    </header>
+
+    <section>
+        <div class="skills-wrap">
+            <div class="hero">
+                <div class="hero-card" aria-live="polite">
+                    <div class="featured-title">
+                        <h2 style="margin:0">Skill Details</h2>
+                        <span class="badge" id="featured-badge"><span class="dot" aria-hidden="true"></span><span id="featured-badge-text">—</span></span>
+                    </div>
+                    <p class="featured-desc" id="featured-desc">Click a skill card to see details and your proficiency meter.</p>
+
+                    <div class="meter">
+                        <div class="meter-label">Proficiency</div>
+                        <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Skill proficiency">
+                            <div class="progress-bar" id="progress-bar"></div>
+                        </div>
+                        <div class="progress-meta" id="progress-text">0%</div>
+                    </div>
+
+                    <div class="hint">Tip: Use <b>Tab</b> then <b>Enter</b> to select a skill.</div>
+                </div>
+
+                <div class="skill-grid" role="list" aria-label="Skills">
+                    <div class="skill-card" tabindex="0" role="listitem" data-skill="Leadership" data-desc="Leading teams, guiding peers, and communicating clearly under pressure." data-level="86" data-points="5">
+                        <div class="skill-top">
+                            <div class="skill-name">Leadership</div>
+                            <div class="skill-percent">86%</div>
+                        </div>
+                        <p class="skill-mini">Lead with clarity & confidence.</p>
+                        <div class="skill-pip-row" aria-hidden="true">
+                            <span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span>
+                        </div>
+                    </div>
+
+                    <div class="skill-card" tabindex="0" role="listitem" data-skill="Web Development" data-desc="Building responsive websites with clean UI, accessible layouts, and practical JavaScript." data-level="78" data-points="4">
+                        <div class="skill-top">
+                            <div class="skill-name">Web Development</div>
+                            <div class="skill-percent">78%</div>
+                        </div>
+                        <p class="skill-mini">Responsive, interactive web experiences.</p>
+                        <div class="skill-pip-row" aria-hidden="true">
+                            <span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span>
+                        </div>
+                    </div>
+
+                    <div class="skill-card" tabindex="0" role="listitem" data-skill="Python Developer" data-desc="Writing Python solutions, automating tasks, and learning best practices for clean, efficient code." data-level="70" data-points="4">
+                        <div class="skill-top">
+                            <div class="skill-name">Python Developer</div>
+                            <div class="skill-percent">70%</div>
+                        </div>
+                        <p class="skill-mini">Automation + problem-solving in Python.</p>
+                        <div class="skill-pip-row" aria-hidden="true">
+                            <span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const cards = Array.from(document.querySelectorAll('.skill-card'));
+        const featuredBadgeText = document.getElementById('featured-badge-text');
+        const featuredDesc = document.getElementById('featured-desc');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const progressEl = document.querySelector('.progress');
+
+        function setActive(card){
+            cards.forEach(c => c.classList.toggle('active', c === card));
+
+            const name = card.getAttribute('data-skill') || 'Skill';
+            const desc = card.getAttribute('data-desc') || '';
+            const levelRaw = Number(card.getAttribute('data-level') || 0);
+            const level = Math.max(0, Math.min(100, levelRaw));
+
+            featuredBadgeText.textContent = name;
+            featuredDesc.textContent = desc;
+
+            // Animate meter
+            progressBar.style.width = level + '%';
+            progressText.textContent = level + '%';
+            progressEl.setAttribute('aria-valuenow', String(level));
+        }
+
+        function activateFromEvent(ev){
+            const target = ev.currentTarget;
+            if (!target || !target.classList.contains('skill-card')) return;
+            setActive(target);
+        }
+
+        cards.forEach(card => {
+            card.addEventListener('click', activateFromEvent);
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setActive(card);
+                }
+            });
+        });
+
+        // Default selection for an immediate visual impression
+        if (cards[0]) setActive(cards[0]);
+    </script>
+</body>
+<footer>
+  <div class="marquee">
+    <p>Thank you for visiting my personal website • Contact me anytime!</p>
+  </div>
+</footer>
+</html>
+

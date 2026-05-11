@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<>, initial-scale=1.0">
+    <title>Education</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body{ padding-bottom:70px; }
+        .edu-wrap{max-width:1100px;margin:0 auto;}
+        .edu-steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
+        @media(max-width:900px){.edu-steps{grid-template-columns:1fr;}}
+        .step{background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:14px;box-shadow:0 14px 30px rgba(0,0,0,0.06);padding:16px;cursor:pointer;transition:transform .15s ease, border-color .15s ease, box-shadow .15s ease;outline:none;}
+        .step:hover{transform:translateY(-3px);border-color:rgba(79,70,229,0.35);box-shadow:0 18px 35px rgba(0,0,0,0.12);} 
+        .step.active{border-color:rgba(79,70,229,0.65);box-shadow:0 25px 55px rgba(79,70,229,0.16);} 
+        .step h2{margin:0 0 8px;font-size:1.1rem;}
+        .step p{margin:0;color:rgba(0,0,0,0.75);line-height:1.55;}
+        .logo{margin-top:10px;border-radius:12px;overflow:hidden;border:1px dashed rgba(0,0,0,0.15);}
+        .logo img{display:block;width:100%;height:220px;object-fit:contain;background:#fff;padding:10px;}
+        .edu-panel{margin-top:14px;background:#fff;border-radius:14px;border:1px solid rgba(0,0,0,0.08);padding:16px;box-shadow:0 14px 30px rgba(0,0,0,0.06);} 
+        .edu-panel .big{font-weight:950;font-size:1.2rem;margin:0 0 8px;}
+        .edu-panel .small{margin:0;color:rgba(0,0,0,0.7);line-height:1.6;}
+        .controls{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;}
+        .pill{border:none;cursor:pointer;background:rgba(51,51,51,0.08);padding:10px 12px;border-radius:999px;font-weight:900;}
+        .pill.active{background:linear-gradient(90deg,#4f46e5,#06b6d4);color:#fff;}
+        .meter{height:12px;background:rgba(0,0,0,0.08);border-radius:999px;overflow:hidden;margin-top:12px;}
+        .meter > div{height:100%;width:0%;background:linear-gradient(90deg,#4f46e5,#06b6d4);transition:width 700ms cubic-bezier(.2,.8,.2,1);} 
+    </style>
+</head>
+<body>
+    <header>
+        <h1>MY PORTFOLIO</h1>
+        <nav>
+            <a href="childhood.html">Upbringing</a>
+            <a href="index.html">Home</a>
+            <a href="skills.html">Skills</a>
+            <a href="future.html">Future</a>
+            <a href="contact.html">contact</a>
+        </nav>
+    </header>
+
+    <section>
+        <div class="edu-wrap">
+            <div class="controls" aria-label="Education navigation pills">
+                <button class="pill active" data-filter="all" type="button">All</button>
+                <button class="pill" data-filter="academics" type="button">Academics</button>
+                <button class="pill" data-filter="kc" type="button">KC (Primary/Sec)</button>
+            </div>
+
+            <div class="edu-steps" id="edu-steps" role="list">
+                <div class="step active" tabindex="0" role="listitem" data-kind="academics" data-title="Nursery" data-desc="I studied in Murang’a County at Brilliance Academy." data-level="18">
+                    <h2>Nursery</h2>
+                    <p>I studied in Muranga county at Brilliance Academy</p>
+                </div>
+
+                <div class="step" tabindex="0" role="listitem" data-kind="academics" data-title="Junior Primary" data-desc="I attended a school in Nakuru called St. Catherine Academy." data-level="35">
+                    <h2>Junior Primary</h2>
+                    <p>I attended a school in Nakuru called St.Catherine Academy</p>
+                </div>
+
+                <div class="step" tabindex="0" role="listitem" data-kind="kc" data-title="Senior Primary" data-desc="I transferred to a boarding school in Nakuru County called Anestar Academy, where I did my KCPE." data-level="72">
+                    <h2>Senior Primary</h2>
+                    <p>I transferred to a boarding school also in Nakuru County called Anestar Academy,where I did my KCPE</p>
+                    <div class="logo">
+                        <img src="anestarlogo.jpeg" alt="Anestar Academy Logo" width="400" height="350">
+                    </div>
+                </div>
+
+                <div class="step" tabindex="0" role="listitem" data-kind="kc" data-title="High School" data-desc="I enrolled in Nakuru Girls High School, where I did my KCSE." data-level="80">
+                    <h2>High School</h2>
+                    <p>I enrolled in a school in the same county called Nakuru Girls High School,where I did my KCSE</p>
+                    <div class="logo">
+                        <img src="nghslogo.jpeg" alt="Nakuru Girls High School Logo" width="400" height="350">
+                    </div>
+                </div>
+
+                <div class="step" tabindex="0" role="listitem" data-kind="academics" data-title="University" data-desc="Currently enrolled at Kirinyaga University." data-level="92">
+                    <h2>University</h2>
+                    <p>Currently enrolled at Kirinyaga University</p>
+                    <div class="logo">
+                        <img src="kyulogo.jpeg" alt="Kirinyaga University Logo" width="400" height="350">
+                    </div>
+                </div>
+            </div>
+
+            <div class="edu-panel" aria-live="polite">
+                <div class="big" id="panel-title">Nursery</div>
+                <p class="small" id="panel-desc">I studied in Murang’a County at Brilliance Academy.</p>
+                <div class="meter" aria-hidden="true"><div id="panel-meter"></div></div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const steps = Array.from(document.querySelectorAll('.step'));
+        const titleEl = document.getElementById('panel-title');
+        const descEl = document.getElementById('panel-desc');
+        const meterEl = document.getElementById('panel-meter');
+
+        function activate(step){
+            steps.forEach(s => s.classList.toggle('active', s === step));
+            const title = step.getAttribute('data-title') || 'Education';
+            const desc = step.getAttribute('data-desc') || '';
+            const level = Math.max(0, Math.min(100, Number(step.getAttribute('data-level') || 0)));
+            titleEl.textContent = title;
+            descEl.textContent = desc;
+            meterEl.style.width = level + '%';
+        }
+
+        steps.forEach((step) => {
+            step.addEventListener('click', () => activate(step));
+            step.addEventListener('keydown', (e) => {
+                if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(step); }
+            });
+        });
+
+        const initial = steps.find(s => s.classList.contains('active')) || steps[0];
+        if(initial) activate(initial);
+
+        const pills = Array.from(document.querySelectorAll('.pill'));
+        function applyFilter(kind){
+            steps.forEach(s => {
+                const matches = kind === 'all' ? true : (s.getAttribute('data-kind') === kind);
+                s.style.display = matches ? '' : 'none';
+            });
+            const firstVisible = steps.find(s => s.style.display !== 'none');
+            if(firstVisible) activate(firstVisible);
+        }
+
+        pills.forEach(p => {
+            p.addEventListener('click', () => {
+                pills.forEach(x => x.classList.toggle('active', x === p));
+                applyFilter(p.getAttribute('data-filter'));
+            });
+        });
+    </script>
+</body>
+
+<footer>
+  <div class="marquee">
+    <p>Thank you for visiting my personal website • Contact me anytime!</p>
+  </div>
+</footer>
+</html>

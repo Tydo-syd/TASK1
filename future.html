@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<>, initial-scale=1.0">
+    <title>Future</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body{ padding-bottom:70px; }
+        .future-wrap{max-width:1100px;margin:0 auto;}
+        .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
+        @media(max-width:900px){.cards{grid-template-columns:1fr;}}
+        .fcard{background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:14px;padding:16px;box-shadow:0 14px 30px rgba(0,0,0,0.06);}
+        .fcard h2{margin:0 0 8px;font-size:1.1rem;}
+        .fcard p{margin:0;color:rgba(0,0,0,0.75);line-height:1.6;}
+        .quiz{margin-top:14px;background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:14px;padding:16px;box-shadow:0 14px 30px rgba(0,0,0,0.06);} 
+        .qtop{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+        .qtitle{font-weight:950;font-size:1.2rem;}
+        .choice-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;}
+        .choice{border:1px solid rgba(0,0,0,0.12);background:rgba(51,51,51,0.06);padding:10px 12px;border-radius:12px;cursor:pointer;font-weight:900;transition:transform .15s ease, background .15s ease, border-color .15s ease;}
+        .choice:hover{transform:translateY(-2px);border-color:rgba(79,70,229,0.35);} 
+        .choice.active{background:linear-gradient(90deg,#4f46e5,#06b6d4);color:#fff;border-color:rgba(79,70,229,0.8);} 
+        .result{margin-top:12px;color:rgba(0,0,0,0.75);line-height:1.6;}
+        .progress{height:12px;background:rgba(0,0,0,0.08);border-radius:999px;overflow:hidden;margin-top:10px;} 
+        .progress > div{height:100%;width:0%;background:linear-gradient(90deg,#4f46e5,#06b6d4);transition:width 600ms cubic-bezier(.2,.8,.2,1);} 
+    </style>
+</head>
+<body>
+    <header>
+        <h1>MY PORTFOLIO</h1>
+        <nav>
+            <a href="childhood.html">Upbringing</a>
+            <a href="education.html">Education</a>
+            <a href="skills.html">Skills</a>
+            <a href="index.html">Home</a>
+            <a href="contact.html">contact</a>
+        </nav>
+    </header>
+
+    <section>
+        <div class="future-wrap">
+            <div class="cards">
+                <div class="fcard">
+                    <h2>Tech Career</h2>
+                    <p>I aspire to build a career in tech where I can keep learning and growing.</p>
+                </div>
+                <div class="fcard">
+                    <h2>Real-world Solutions</h2>
+                    <p>Bring solutions to real world problems by building tools that people actually use.</p>
+                </div>
+                <div class="fcard">
+                    <h2>Consistency</h2>
+                    <p>Small daily effort now becomes big progress later.</p>
+                </div>
+            </div>
+
+            <div class="quiz" aria-live="polite">
+                <div class="qtop">
+                    <div class="qtitle">Mini Future Mapper</div>
+                    <div style="font-weight:900;color:rgba(0,0,0,0.7);">Pick what motivates you</div>
+                </div>
+                <div class="choice-row" role="radiogroup" aria-label="Motivation choices">
+                    <button class="choice" type="button" data-score="85">Building cool things</button>
+                    <button class="choice" type="button" data-score="75">Helping people</button>
+                    <button class="choice" type="button" data-score="65">Learning challenges</button>
+                </div>
+                <div class="result" id="future-result">Choose one option to see your “future focus”.</div>
+                <div class="progress" aria-hidden="true"><div id="future-meter"></div></div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const choices = Array.from(document.querySelectorAll('.choice'));
+        const result = document.getElementById('future-result');
+        const meter = document.getElementById('future-meter');
+
+        const messages = {
+            85: 'Future Focus: Product builder. I want to create web experiences that feel modern and useful.',
+            75: 'Future Focus: Community helper. I’m aiming to build solutions that support real people.',
+            65: 'Future Focus: Lifelong learner. I enjoy challenges that help me level up fast.'
+        };
+
+        choices.forEach(btn => {
+            btn.addEventListener('click', () => {
+                choices.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const score = Number(btn.getAttribute('data-score') || 0);
+                meter.style.width = score + '%';
+                result.textContent = messages[score] || 'Future Focus ready!';
+            });
+        });
+    </script>
+</body>
+
+<footer>
+  <div class="marquee">
+    <p>Thank you for visiting my personal website • Contact me anytime!</p>
+  </div>
+</footer>
+</html>

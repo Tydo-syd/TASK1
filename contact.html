@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<>, initial-scale=1.0">
+    <title>Contact</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body{ 
+            padding-bottom:70px; 
+        }
+        .contact-wrap{
+            max-width:1100px;margin:0 auto;
+            padding:20px;
+        }
+        .contact-grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:14px;
+        }
+
+        @media(max-width:900px){
+            .contact-grid{grid-template-columns:1fr;}
+        }
+        .cbox{
+            background:#fff;
+            border:1px solid rgba(0,0,0,0.08);
+            border-radius:14px;
+            padding:16px;
+            box-shadow:0 14px 30px rgba(0,0,0,0.06);
+        } 
+        .cbox h2{
+            margin:0 0 10px;
+            font-size:1.25rem;
+        }
+        .row{
+            display:flex;
+            gap:10px;
+            flex-wrap:wrap;
+            align-items:center;
+        }
+        .value{
+            font-weight:950;
+        }
+        .copy{
+            border:none;
+            cursor:pointer;
+            border-radius:12px;
+            padding:10px 12px;
+            background:rgba(51,51,51,0.08);
+            font-weight:900;
+            transition:transform .15s ease, background .15s ease;
+        }
+        .copy:hover{
+            transform:translateY(-2px);
+            background:rgba(51,51,51,0.13);
+        } 
+        .copy:active{
+            transform:translateY(0px);
+            background:rgba(51,51,51,0.18);
+        } 
+        .form label{
+            display:block;
+            font-weight:900;
+            margin:12px 0 6px;
+        }
+        .form input, .form textarea{
+            width:100%;
+            padding:10px 12px;
+            border-radius:12px;
+            border:1px solid rgba(0,0,0,0.14);
+            font-family:inherit;
+        }
+        .form textarea{
+            min-height:100px;
+            resize:vertical;
+        }
+        .send{
+            margin-top:12px;
+            border:none;cursor:pointer;
+            border-radius:14px;padding:12px 14px;
+            background:linear-gradient(90deg,#4f46e5,#06b6d4);
+            color:#fff;font-weight:950;
+            transition:transform .15s ease, background .15s ease;
+        }
+        .note{
+            margin-top:10px;
+            color:rgba(0,0,0,0.65);
+            line-height:1.5;
+            font-size:.95rem;
+        }
+        .toast{
+            position:fixed;
+            top:80px;
+            left:50%;
+            transform:translateX(-50%);
+            background:rgba(17,17,17,0.92);
+            color:#fff;
+            padding:10px 14px;
+            border-radius:12px;
+            opacity:0;
+            pointer-events:none;
+            transition:opacity .25s ease;
+        }
+        .toast.show{
+            opacity:1;
+            pointer-events:auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>MY PORTFOLIO</h1>
+        <nav>
+            <a href="childhood.html">Upbringing</a>
+            <a href="education.html">Education</a>
+            <a href="skills.html">Skills</a>
+            <a href="future.html">Future</a>
+            <a href="index.html">Home</a>
+        </nav>
+    </header>
+
+    <section>
+        <div class="contact-wrap">
+            <div class="contact-grid">
+                <div class="cbox">
+                    <h2>Direct Contact</h2>
+                    <div class="row" style="margin-top:6px;">
+                        <div>Email: <span class="value" id="email">sydneykaris06@gmail.com</span></div>
+                        <button class="copy" type="button" data-copy="email">Copy</button>
+                    </div>
+                    <div class="row" style="margin-top:12px;">
+                        <div>Contact: <span class="value" id="phone">0784588076</span></div>
+                        <button class="copy" type="button" data-copy="phone">Copy</button>
+                    </div>
+                    <div class="note">Tip: click Copy buttons to copy details to your clipboard.</div>
+                </div>
+
+                <div class="cbox form" aria-live="polite">
+                    <h2>Send a Quick Message (Local)</h2>
+                    <div class="note">This form won’t send emails automatically, but it will create a ready message you can copy.</div>
+
+                    <label for="name">Your name</label>
+                    <input id="name" type="text" placeholder="e.g., Alex" />
+
+                    <label for="topic">Topic</label>
+                    <input id="topic" type="text" placeholder="e.g., Internship" />
+
+                    <label for="message">Message</label>
+                    <textarea id="message" placeholder="Write your message..."></textarea>
+
+                    <button class="send" type="button" id="buildMsg">Build message</button>
+
+                    <div class="note" style="margin-top:10px;">Generated message:</div>
+                    <div style="margin-top:8px;background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.08);padding:10px 12px;border-radius:12px;" id="generated">—</div>
+
+                    <button class="copy" type="button" id="copyGenerated" style="margin-top:10px;">Copy generated</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="toast" id="toast" role="status" aria-live="polite">Copied!</div>
+
+    <script>
+        const toast = document.getElementById('toast');
+        let toastTimer = null;
+        function showToast(){
+            toast.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(()=>toast.classList.remove('show'), 1200);
+        }
+
+        async function copyText(text){
+            try{
+                await navigator.clipboard.writeText(text);
+                showToast();
+            }catch(e){
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                showToast();
+            }
+        }
+
+        document.querySelectorAll('.copy').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const key = btn.getAttribute('data-copy');
+                if(key === 'email') copyText(document.getElementById('email').textContent);
+                if(key === 'phone') copyText(document.getElementById('phone').textContent);
+            });
+        });
+
+        const buildMsg = document.getElementById('buildMsg');
+        const generated = document.getElementById('generated');
+        const copyGenerated = document.getElementById('copyGenerated');
+
+        buildMsg.addEventListener('click', () => {
+            const name = document.getElementById('name').value.trim() || 'Someone';
+            const topic = document.getElementById('topic').value.trim() || 'Hello';
+            const msg = document.getElementById('message').value.trim() || 'I would like to connect with you.';
+            const final = `Hi Sydney,\n\n${msg}\n\n- ${name} (${topic})`;
+            generated.textContent = final;
+        });
+
+        copyGenerated.addEventListener('click', () => {
+            const text = generated.textContent;
+            if(!text || text.trim() === '—') return;
+            copyText(text);
+        });
+    </script>
+</body>
+
+<footer>
+  <div class="marquee">
+    <p>Thank you for visiting my personal website • Contact me anytime!</p>
+  </div>
+</footer>
+</html>

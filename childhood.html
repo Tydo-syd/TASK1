@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<>, initial-scale=1.0">
+    <title>Childhood</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body{ padding-bottom:70px; }
+        .timeline{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:14px;}
+        @media(max-width:700px){.timeline{grid-template-columns:1fr;}}
+        .titem{background:rgba(255,255,255,0.95);border:1px solid rgba(0,0,0,0.08);border-radius:14px;padding:14px;box-shadow:0 10px 20px rgba(0,0,0,0.05);} 
+        .titem b{display:block;margin-bottom:6px;}
+
+        .photo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
+        @media(max-width:900px){.photo-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+        @media(max-width:560px){.photo-grid{grid-template-columns:1fr;}}
+        .photo{border-radius:14px;overflow:hidden;border:1px solid rgba(0,0,0,0.08);box-shadow:0 12px 22px rgba(0,0,0,0.06);cursor:pointer;transform:translateZ(0);transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;}
+        .photo:hover{transform:translateY(-3px);box-shadow:0 18px 30px rgba(0,0,0,0.12);border-color:rgba(79,70,229,0.35);}
+        .photo img{width:100%;height:220px;object-fit:cover;display:block;}
+        .photo-caption{padding:10px 12px;background:#fff;}
+
+        .lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;padding:18px;z-index:9999;}
+        .lightbox.show{display:flex;}
+        .lb-card{width:min(950px,100%);background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,0.35);}
+        .lb-img{width:100%;height:520px;object-fit:contain;background:#111;display:block;}
+        .lb-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-top:1px solid rgba(0,0,0,0.08);} 
+        .lb-title{font-weight:900;}
+        .lb-btn{border:none;background:#111;color:#fff;border-radius:12px;padding:8px 12px;cursor:pointer;font-weight:800;}
+        .lb-btn.secondary{background:rgba(17,17,17,0.10);color:#111;border:1px solid rgba(0,0,0,0.10);} 
+        .lb-kbd{font-size:12px;color:rgba(0,0,0,0.65);} 
+    </style>
+</head>
+<body>
+    <header>
+        <h1>MY PORTFOLIO</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="education.html">Education</a>
+            <a href="skills.html">Skills</a>
+            <a href="future.html">Future</a>
+            <a href="contact.html">contact</a>
+        </nav>
+    </header>
+
+    <section>
+        <div class="timeline" aria-label="Childhood quick timeline">
+            <div class="titem"><b>2006, June 2</b><div>Born in Kilifi, Kenya</div></div>
+            <div class="titem"><b>Early years</b><div>Lived in Mombasa for three years before starting kindergarten in Muranga</div></div>
+            <div class="titem"><b>Growing up</b><div>Moved to Nakuru where I grew up with my brother and parents</div></div>
+            <div class="titem"><b>Memorable moment</b><div>Attending shows in Nakuru with my brother and friends</div></div>
+        </div>
+    </section>
+
+    <section>
+        <h2>My Childhood</h2>
+        <p>Growing up, I had a wonderful childhood filled with love and laughter. I was fortunate to have supportive parents who always encouraged me to pursue my dreams. I have fond memories of playing with my friends in the neighborhood, going on family vacations, and celebrating holidays together. My childhood was a time of exploration and learning, and it has shaped me into the person I am today.</p>
+        <p>Here are some pictures (click to view bigger).</p>
+
+        <div class="photo-grid" id="photo-grid">
+            <figure class="photo" data-full="childhood1.jpeg" data-caption="Childhood Picture 1">
+                <img src="childhood1.jpeg" alt="Childhood Picture 1" width="400" height="350">
+                <figcaption class="photo-caption">Childhood Picture 1</figcaption>
+            </figure>
+            <figure class="photo" data-full="childhood2.jpeg" data-caption="Childhood Picture 2">
+                <img src="childhood2.jpeg" alt="Childhood Picture 2" width="400" height="350">
+                <figcaption class="photo-caption">Childhood Picture 2</figcaption>
+            </figure>
+            <figure class="photo" data-full="childhood3.jpeg" data-caption="Childhood Picture 3">
+                <img src="childhood3.jpeg" alt="Childhood Picture 3" width="400" height="350">
+                <figcaption class="photo-caption">Childhood Picture 3</figcaption>
+            </figure>
+            <figure class="photo" data-full="childhood4.jpeg" data-caption="Childhood Picture 4">
+                <img src="childhood4.jpeg" alt="Childhood Picture 4" width="400" height="350">
+                <figcaption class="photo-caption">Childhood Picture 4</figcaption>
+            </figure>
+            <figure class="photo" data-full="childhood5.jpeg" data-caption="Childhood Picture 5">
+                <img src="childhood5.jpeg" alt="Childhood Picture 5" width="400" height="350">
+                <figcaption class="photo-caption">Childhood Picture 5</figcaption>
+            </figure>
+            <figure class="photo" data-full="childhood6.jpeg" data-caption="Childhood Picture 6">
+                <img src="childhood6.jpeg" alt="Childhood Picture 6" width="400" height="350">
+                <figcaption class="photo-caption">Childhood Picture 6</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+        <div class="lb-card">
+            <img class="lb-img" id="lb-img" alt="Selected childhood image">
+            <div class="lb-bar">
+                <div>
+                    <div class="lb-title" id="lb-title">—</div>
+                    <div class="lb-kbd">Press <b>Esc</b> to close</div>
+                </div>
+                <div style="display:flex;gap:10px;align-items:center;">
+                    <button class="lb-btn secondary" id="prevBtn" aria-label="Previous image" type="button">Prev</button>
+                    <button class="lb-btn" id="nextBtn" aria-label="Next image" type="button">Next</button>
+                    <button class="lb-btn secondary" id="closeBtn" aria-label="Close" type="button">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const photos = Array.from(document.querySelectorAll('.photo'));
+        const lightbox = document.getElementById('lightbox');
+        const lbImg = document.getElementById('lb-img');
+        const lbTitle = document.getElementById('lb-title');
+        const closeBtn = document.getElementById('closeBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        let idx = 0;
+
+        function render(){
+            const p = photos[idx];
+            lbImg.src = p.getAttribute('data-full');
+            lbTitle.textContent = p.getAttribute('data-caption') || '';
+        }
+
+        photos.forEach((p, i) => {
+            p.addEventListener('click', () => {
+                idx = i;
+                render();
+                lightbox.classList.add('show');
+            });
+            p.tabIndex = 0;
+            p.setAttribute('role','button');
+            p.addEventListener('keydown', (e) => {
+                if(e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    idx = i;
+                    render();
+                    lightbox.classList.add('show');
+                }
+            });
+        });
+
+        function close(){ lightbox.classList.remove('show'); }
+        closeBtn.addEventListener('click', close);
+        lightbox.addEventListener('click', (e) => {
+            if(e.target === lightbox) close();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if(!lightbox.classList.contains('show')) return;
+            if(e.key === 'Escape') close();
+            if(e.key === 'ArrowLeft'){ idx = (idx - 1 + photos.length) % photos.length; render(); }
+            if(e.key === 'ArrowRight'){ idx = (idx + 1) % photos.length; render(); }
+        });
+
+        prevBtn.addEventListener('click', () => { idx = (idx - 1 + photos.length) % photos.length; render(); });
+        nextBtn.addEventListener('click', () => { idx = (idx + 1) % photos.length; render(); });
+    </script>
+</body>
+
+<footer>
+  <div class="marquee">
+    <p>Thank you for visiting my personal website • Contact me anytime!</p>
+  </div>
+</footer>
+</html>

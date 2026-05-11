@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<>, initial-scale=1.0">
+    <title>Portfolio Home</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body{ padding-bottom:70px; }
+        .hero-wrap{max-width:1100px;margin:0 auto;}
+        .hero-main{display:grid;grid-template-columns:1.25fr 0.75fr;gap:18px;align-items:start;}
+        @media(max-width:900px){.hero-main{grid-template-columns:1fr;}}
+        .intro-card{background:#fff;border-radius:14px;border:1px solid rgba(0,0,0,0.08);box-shadow:0 14px 30px rgba(0,0,0,0.06);padding:18px;}
+        .intro-card h2{margin:0 0 10px;font-size:1.6rem;}
+        .tag-row{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;}
+        .tag{padding:8px 12px;border-radius:999px;background:rgba(51,51,51,0.08);font-weight:700;}
+        .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;}
+        .btn{border:none;cursor:pointer;padding:10px 14px;border-radius:12px;font-weight:800;background:#111;color:#fff;transition:transform .15s ease, box-shadow .15s ease, background .15s ease;}
+        .btn:hover{transform:translateY(-2px);box-shadow:0 18px 30px rgba(0,0,0,0.12);}
+        .btn.alt{background:linear-gradient(90deg,#4f46e5,#06b6d4);} 
+        .pulse-dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#22c55e;margin-left:8px;box-shadow:0 0 0 0 rgba(34,197,94,0.5);animation:pulse 1.6s infinite;}
+        @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,0.55);}70%{box-shadow:0 0 0 12px rgba(34,197,94,0);}100%{box-shadow:0 0 0 0 rgba(34,197,94,0);} }
+        .side-card{background:#fff;border-radius:14px;border:1px solid rgba(0,0,0,0.08);padding:18px;box-shadow:0 14px 30px rgba(0,0,0,0.06);} 
+        .clock{font-weight:900;font-size:1.2rem;margin:8px 0 0;}
+        .mini{color:rgba(0,0,0,0.7);line-height:1.5;margin:8px 0 0;font-size:.95rem;}
+        .list{margin:12px 0 0;padding-left:18px;color:rgba(0,0,0,0.75);} 
+        .toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:rgba(17,17,17,0.92);color:#fff;padding:10px 14px;border-radius:12px;opacity:0;pointer-events:none;transition:opacity .25s ease;}
+        .toast.show{opacity:1;}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>MY PORTFOLIO</h1>
+        <nav>
+            <a href="childhood.html">Upbringing</a>
+            <a href="education.html">Education</a>
+            <a href="skills.html">Skills</a>
+            <a href="future.html">Future</a>
+            <a href="contact.html">contact</a>
+        </nav>
+    </header>
+
+    <section>
+        <div class="hero-wrap">
+            <div class="hero-main">
+                <div class="intro-card" aria-live="polite">
+                    <h2>Hi I'm <em>SYDNEY KARIUKI</em><span class="pulse-dot" aria-hidden="true"></span></h2>
+                    <div class="tag-row" aria-label="Quick facts">
+                        <span class="tag">Born in Kilifi</span>
+                        <span class="tag">Raised in Nakuru</span>
+                        <span class="tag">University Student</span>
+                    </div>
+                    <p class="mini" id="greeting">Welcome! Explore my journey using the navigation above.</p>
+
+                    <div class="cta-row">
+                        <button class="btn" id="btnSkills" type="button">Jump to Skills</button>
+                        <button class="btn alt" id="btnSurprise" type="button">Surprise fact</button>
+                    </div>
+
+                    <ul class="list" id="fact-list" aria-label="Highlights">
+                        <li>Curious about technology and problem-solving</li>
+                        <li>Interested in building useful web tools</li>
+                        <li>Always learning and improving</li>
+                    </ul>
+                </div>
+
+                <aside class="side-card">
+                    <div style="font-weight:900;">Live Snapshot</div>
+                    <div class="clock" id="clock">--:--:--</div>
+                    <p class="mini">This page updates the clock every second and lets you reveal a new fact instantly.</p>
+                    <div class="mini" style="margin-top:12px;">
+                        <b>Tip:</b> Click <b>Surprise fact</b> to change the first highlight.
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <div class="toast" id="toast" role="status" aria-live="polite">Copied!</div>
+
+    <script>
+        const clockEl = document.getElementById('clock');
+        function pad(n){return String(n).padStart(2,'0');}
+        function updateClock(){
+            const d = new Date();
+            clockEl.textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        document.getElementById('btnSkills').addEventListener('click', () => {
+            location.href = 'skills.html';
+        });
+
+        const facts = [
+            'I enjoy turning ideas into working websites.',
+            'I like learning new programming concepts step-by-step.',
+            'I’m inspired by real-world problems that need solutions.',
+            'I love collaborating and learning from others.',
+            'I believe consistency beats talent alone.'
+        ];
+
+        const factList = document.getElementById('fact-list');
+        document.getElementById('btnSurprise').addEventListener('click', () => {
+            const pick = facts[Math.floor(Math.random() * facts.length)];
+            const lis = factList.querySelectorAll('li');
+            if(lis[0]) lis[0].textContent = pick;
+            factList.style.transform = 'translateY(-2px)';
+            setTimeout(() => factList.style.transform = 'translateY(0px)', 180);
+        });
+
+        // Optional: hide toast if shown
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'Escape') {
+                const toast = document.getElementById('toast');
+                if(toast) toast.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+
+<footer>
+  <div class="marquee">
+    <p>Thank you for visiting my personal website • Contact me anytime!</p>
+  </div>
+</footer>
+</html>
